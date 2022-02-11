@@ -8,9 +8,9 @@ const addTransaction = async (req, res, next) => {
     if (error) {
       throw new BadRequest("missing required name field");
     }
-    const { _id } = req.user;
-    const newContacts = await Transaction.create({ ...body, owner: _id });
-    //  const newContacts = await Transaction.create({ ...body });
+    //  const { _id } = req.user;
+    //  const newContacts = await Transaction.create({ ...body, owner: _id });
+    const newContacts = await Transaction.create({ ...body });
     res.status(201).json(newContacts);
   } catch (error) {
     if (error.message.includes("validation failed")) {

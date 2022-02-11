@@ -20,7 +20,15 @@ const transactionSchema = Schema({
   comment: {
     type: String,
   },
-  balance: {
+  total: {
+    type: Number,
+    required: true,
+  },
+  month: {
+    type: Number,
+    required: true,
+  },
+  year: {
     type: Number,
     required: true,
   },
@@ -36,9 +44,11 @@ const joiShema = Joi.object({
   sum: Joi.number().required(),
   comment: Joi.string().required(),
   date: Joi.string().required(),
-  balance: Joi.number().required(),
+  total: Joi.number().required(),
+  month: Joi.number().required(),
+  year: Joi.number().required(),
 });
 
-const Transaction = model("contact", transactionSchema);
+const Transaction = model("transaction", transactionSchema);
 
 module.exports = { Transaction, joiShema };
