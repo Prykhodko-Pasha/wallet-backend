@@ -1,5 +1,5 @@
 const { Transaction, joiShema } = require("../../models/transactions");
-const { BadRequest, Conflict } = require("http-errors");
+const { BadRequest, Conflict, Unauthorized } = require("http-errors");
 
 const addTransaction = async (req, res, next) => {
   const body = req.body;
@@ -23,26 +23,30 @@ const addTransaction = async (req, res, next) => {
     const { sum, type } = req.body;
     let total = 0;
     const lastTransaction = await Transaction.findOne(
-      // { owner: _id },
+      {
+        // owner: _id
+      },
       {},
       { sort: { created_at: -1 } }
     );
     if (lastTransaction) {
       type
-        ? (total = lastTransaction.total + sum)
-        : (total = lastTransaction.total - sum);
+        ? (total = lastTransaction.total - sum)
+        : (total = lastTransaction.total + sum);
     } else {
-      type
-        ? (total = sum)
-        : new Conflict("there are not enough funds on your balance");
+      type ? (total = sum) : new Conflict();
     }
-    const newTransactions = await Transaction.create({
+    if (total < 0) {
+      throw new Unauthorized();
+    }
+    const newContacts = await Transaction.create({
       ...req.body,
       sum,
       total,
       // owner: _id,
     });
-    res.status(201).json(newTransactions);
+
+    res.status(201).json(newContacts);
   } catch (error) {
     if (error.message.includes("validation failed")) {
       error.status = 400;

@@ -6,7 +6,6 @@ const transactionSchema = Schema(
     type: {
       type: Boolean,
       default: true,
-      required: true,
     },
     sum: {
       type: Number,
@@ -17,6 +16,7 @@ const transactionSchema = Schema(
     },
     total: {
       type: Number,
+      required: true,
     },
     month: {
       type: Number,
@@ -64,7 +64,6 @@ const joiShema = Joi.object({
   ),
   sum: Joi.number().required(),
   comment: Joi.string(),
-  date: Joi.string(),
   total: Joi.number(),
   month: Joi.number(),
   year: Joi.number(),
