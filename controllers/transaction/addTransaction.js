@@ -1,17 +1,46 @@
 const { Transaction, joiShema } = require("../../models/transactions");
-const { BadRequest } = require("http-errors");
+const { BadRequest, Conflict } = require("http-errors");
 
 const addTransaction = async (req, res, next) => {
+  const body = req.body;
   try {
-    const { error } = joiShema.validate(req.body);
+    const { error } = joiShema.validate(body);
     if (error) {
       throw new BadRequest("missing required name field");
     }
+    // const { _id } = req.user;
+    // const { sum, type } = req.body;
+    // let total = 0; // удалити 0, якщо при регістрації буде вказаний баланс
+    // !type ? (total += sum) : (total -= sum);
+    // const newTransactions = await Transaction.create({
+    //   ...req.body,
+    //   total,
+    //   sum,
+    //   owner: _id,
+    // });
 
-    const newContacts = await Transaction.create({ ...req.body });
-    //  const { _id } = req.user;
-    //  const newContacts = await Transaction.create({ ...body, owner: _id });
-    res.status(201).json(newContacts);
+    // const { _id } = req.user;
+    const { sum, type } = req.body;
+    let total = 0;
+    const lastTransaction = await Transaction.findOne(
+      // { owner: _id },
+      {},
+      { sort: { created_at: -1 } }
+    );
+    if (lastTransaction) {
+      !type ? (total += sum) : (total -= sum);
+    } else {
+      type
+        ? (total = sum)
+        : new Conflict("there are not enough funds on your balance");
+    }
+    const newTransactions = await Transaction.create({
+      ...req.body,
+      sum,
+      total,
+      // owner: _id,
+    });
+    res.status(201).json(newTransactions);
   } catch (error) {
     if (error.message.includes("validation failed")) {
       error.status = 400;
