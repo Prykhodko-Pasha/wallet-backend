@@ -8,6 +8,7 @@ const addTransaction = async (req, res, next) => {
     if (error) {
       throw new BadRequest("missing required name field");
     }
+
     //  const { _id } = req.user;
     //  const newContacts = await Transaction.create({ ...body, owner: _id });
     const newContacts = await Transaction.create({ ...body });

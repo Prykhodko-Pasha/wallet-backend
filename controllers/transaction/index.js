@@ -1,5 +1,6 @@
-const getTransactions = require("./addTransaction");
-
+const addTransactions = require("./addTransaction");
+const getTransactions = require("./getTransaction");
 module.exports = {
+  addTransactions,
   getTransactions,
 };
