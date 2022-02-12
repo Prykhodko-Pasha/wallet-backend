@@ -18,7 +18,7 @@ const addTransaction = async (req, res, next) => {
     //   sum,
     //   owner: _id,
     // });
-
+    // =========================================== //
     // const { _id } = req.user;
     const { sum, type } = req.body;
     let total = 0;
@@ -39,14 +39,14 @@ const addTransaction = async (req, res, next) => {
     if (total < 0) {
       throw new Unauthorized();
     }
-    const newContacts = await Transaction.create({
+    const newTransactions = await Transaction.create({
       ...req.body,
       sum,
       total,
       // owner: _id,
     });
 
-    res.status(201).json(newContacts);
+    res.status(201).json(newTransactions);
   } catch (error) {
     if (error.message.includes("validation failed")) {
       error.status = 400;
