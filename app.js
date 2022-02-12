@@ -3,7 +3,8 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-const usersRouter = require("./routes/api/users");
+// const usersRouter = require('./routes/api/users')
+const categoriesRouter = require("./routes/api/categories");
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 // app.use(express.static("public")); Uncomment me if you need to use some public files
 
-app.use("/api/users", usersRouter);
+// app.use('/api/users', usersRouter)
+app.use("/api/categories", categoriesRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not found" });
