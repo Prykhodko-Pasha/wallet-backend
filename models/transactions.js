@@ -2,26 +2,18 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const transactionSchema = Schema({
-  active: {
-    type: Boolean,
-    default: true,
-  },
   date: {
     type: Date,
     default: Date.now,
   },
   type: {
-    type: String,
+    type: Boolean,
     default: true,
+    required: true,
   },
-  category: {
-    type: String,
-    enum: ["Other", "Income", "consumption"],
-    default: "Other",
-  },
+
   sum: {
     type: Number,
-    required: true,
   },
 
   comment: {
@@ -40,12 +32,38 @@ const transactionSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
+  category: {
+    type: String,
+    enum: [
+      "basic",
+      "products",
+      "restaurant",
+      "auto",
+      "house",
+      "development",
+      "rest",
+      "children",
+      "animals",
+      "other",
+    ],
+    default: "basic",
+  },
 });
 
 const joiShema = Joi.object({
-  active: Joi.bool,
-  type: Joi.string().required(),
-  category: Joi.string().valueOf("Other", "Income", "consumption"),
+  type: Joi.bool,
+  category: Joi.string().valueOf(
+    "basic",
+    "products",
+    "restaurant",
+    "auto",
+    "house",
+    "development",
+    "rest",
+    "children",
+    "animals",
+    "other"
+  ),
   sum: Joi.number().required(),
   comment: Joi.string(),
   date: Joi.string(),
