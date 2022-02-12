@@ -28,7 +28,9 @@ const addTransaction = async (req, res, next) => {
       { sort: { created_at: -1 } }
     );
     if (lastTransaction) {
-      !type ? (total += sum) : (total -= sum);
+      type
+        ? (total = lastTransaction.total + sum)
+        : (total = lastTransaction.total - sum);
     } else {
       type
         ? (total = sum)
