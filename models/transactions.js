@@ -5,7 +5,6 @@ const transactionSchema = Schema(
   {
     type: {
       type: Boolean,
-      default: true,
     },
     sum: {
       type: Number,
@@ -16,7 +15,6 @@ const transactionSchema = Schema(
     },
     total: {
       type: Number,
-      required: true,
     },
     month: {
       type: Number,
@@ -49,7 +47,7 @@ const transactionSchema = Schema(
 );
 
 const joiShema = Joi.object({
-  type: Joi.bool,
+  type: Joi.boolean().required(),
   category: Joi.string().valueOf(
     "basic",
     "products",

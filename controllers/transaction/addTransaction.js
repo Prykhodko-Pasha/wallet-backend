@@ -1,5 +1,5 @@
 const { Transaction, joiShema } = require("../../models/transactions");
-const { BadRequest, Conflict, Unauthorized } = require("http-errors");
+const { BadRequest, Conflict } = require("http-errors");
 
 const addTransaction = async (req, res, next) => {
   const body = req.body;
@@ -20,7 +20,7 @@ const addTransaction = async (req, res, next) => {
     // });
     // =========================================== //
     // const { _id } = req.user;
-    const { sum, type } = req.body;
+    const { sum, type, month, year } = req.body;
     let total = 0;
     const lastTransaction = await Transaction.findOne(
       {
@@ -31,18 +31,21 @@ const addTransaction = async (req, res, next) => {
     );
     if (lastTransaction) {
       type
-        ? (total = lastTransaction.total - sum)
-        : (total = lastTransaction.total + sum);
+        ? (total = lastTransaction.total + sum)
+        : (total = lastTransaction.total - sum);
     } else {
-      type ? (total = sum) : new Conflict();
+      type
+        ? (total = sum)
+        : new Conflict("there are not enough funds on your balance");
     }
     if (total < 0) {
-      throw new Unauthorized();
+      throw new Conflict("there are not enough funds on your balance");
     }
     const newTransactions = await Transaction.create({
       ...req.body,
-      sum,
       total,
+      month,
+      year,
       // owner: _id,
     });
 
