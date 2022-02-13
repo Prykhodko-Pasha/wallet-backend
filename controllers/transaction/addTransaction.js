@@ -41,18 +41,7 @@ const addTransaction = async (req, res, next) => {
       year,
       // owner: _id,
     });
-
     res.status(201).json(newTransactions);
-    // const { _id } = req.user;
-    // const { sum, type } = req.body;
-    // let total = 0; // удалити 0, якщо при регістрації буде вказаний баланс
-    // !type ? (total += sum) : (total -= sum);
-    // const newTransactions = await Transaction.create({
-    //   ...req.body,
-    //   total,
-    //   sum,
-    //   owner: _id,
-    // });
   } catch (error) {
     if (error.message.includes("validation failed")) {
       error.status = 400;
