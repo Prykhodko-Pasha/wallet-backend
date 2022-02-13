@@ -9,19 +9,12 @@ const addTransaction = async (req, res, next) => {
       throw new BadRequest("missing required name field");
     }
     // const { _id } = req.user;
-    // const { sum, type } = req.body;
-    // let total = 0; // удалити 0, якщо при регістрації буде вказаний баланс
-    // !type ? (total += sum) : (total -= sum);
-    // const newTransactions = await Transaction.create({
-    //   ...req.body,
-    //   total,
-    //   sum,
-    //   owner: _id,
-    // });
-    // =========================================== //
-    // const { _id } = req.user;
-    const { sum, type, month, year } = req.body;
+    const { sum, type } = req.body;
     let total = 0;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
     const lastTransaction = await Transaction.findOne(
       {
         // owner: _id
@@ -50,6 +43,16 @@ const addTransaction = async (req, res, next) => {
     });
 
     res.status(201).json(newTransactions);
+    // const { _id } = req.user;
+    // const { sum, type } = req.body;
+    // let total = 0; // удалити 0, якщо при регістрації буде вказаний баланс
+    // !type ? (total += sum) : (total -= sum);
+    // const newTransactions = await Transaction.create({
+    //   ...req.body,
+    //   total,
+    //   sum,
+    //   owner: _id,
+    // });
   } catch (error) {
     if (error.message.includes("validation failed")) {
       error.status = 400;
