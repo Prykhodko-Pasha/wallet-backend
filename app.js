@@ -12,16 +12,18 @@ const rateLimit = require('express-rate-limit')
 const { apiLimit, jsonLimit } = require('./config/rate-limit.json')
 const { HttpCode } = require('./helpers/constants')
 require('dotenv').config()
-
 const authRouter = require('./routes/api/auth')
 const usersRouter = require('./routes/api/users')
 const testingRouter = require('./routes/api/testing')
+// const usersRouter = require("./routes/api/users");
+const transactionsRouter = require("./routes/api/transactions");
+const categoriesRouter = require("./routes/api/categories");
+
 
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.get('env') !== 'test' && app.use(logger(formatsLogger))
-
 app.use(
   cors({
     credentials: true,
@@ -33,10 +35,13 @@ app.use(
 )
 app.use(helmet())
 app.use(express.json({ limit: jsonLimit }))
-
 // app.use(express.urlencoded({ extended: false }))
 // app.use(express.static(path.join(__dirname, "public")));
-
+app.use(logger(formatsLogger));
+// app.use(express.static("public"));
+// app.use("/api/users", usersRouter);
+app.use("/api/transactions", transactionsRouter);
+app.use("/api/categories", categoriesRouter);
 app.use(cookieParser())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/auth', authRouter)
