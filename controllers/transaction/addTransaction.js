@@ -20,7 +20,7 @@ const addTransaction = async (req, res, next) => {
         // owner: _id
       },
       {},
-      { sort: { created_at: -1 } }
+      { sort: { createdAt: -1 } }
     );
     if (lastTransaction) {
       type
