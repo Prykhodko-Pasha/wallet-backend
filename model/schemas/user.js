@@ -1,13 +1,13 @@
-const { Schema, model } = require('mongoose');
-const bcrypt = require('bcryptjs');
-const gravatar = require('gravatar');
+const { Schema, model } = require("mongoose");
+const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 const SALT_WORK_FACTOR = 8;
 
 const userSchema = new Schema(
   {
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
       unique: true,
       validate: {
         validator: v => /\S+@\S+\.\S+/.test(v),
@@ -16,17 +16,17 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, "Password is required"],
     },
     subscription: {
       type: String,
-      enum: ['free', 'pro', 'premium'],
-      default: 'free',
+      enum: ["free", "pro", "premium"],
+      default: "free",
     },
     avatarURL: {
       type: String,
       default: function () {
-        return gravatar.url(this.email, { s: '250' }, true);
+        return gravatar.url(this.email, { s: "250" }, true);
       },
     },
     token: {
@@ -35,14 +35,14 @@ const userSchema = new Schema(
     },
     verificationToken: {
       type: String,
-      required: [true, 'Verification token is required'],
+      required: [true, "Verification token is required"],
     },
   },
   { versionKey: false },
 );
 
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     return next();
   }
   const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
@@ -54,6 +54,6 @@ userSchema.methods.validPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-const User = model('user', userSchema);
+const User = model("user", userSchema);
 
 module.exports = User;
