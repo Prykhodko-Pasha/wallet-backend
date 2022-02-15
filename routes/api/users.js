@@ -1,3 +1,4 @@
+
 const Router = require("express").Router;
 const userController = require("../../controllers/userСontroller");
 const router = new Router();
@@ -15,5 +16,13 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users", authMiddleware, userController.getUsers);
+
+const express = require("express");
+const { auth } = require("../../middlewares");
+const ctrl = require("../../controllers/users");
+const router = express.Router();
+
+router.get("/currentUser", auth, ctrl.getCurrent);
+
 
 module.exports = router;
