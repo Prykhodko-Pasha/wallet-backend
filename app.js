@@ -4,7 +4,9 @@ const cors = require("cors");
 require("dotenv").config();
 
 const usersRouter = require("./routes/api/users");
+const cookieParser = require("cookie-parser");
 
+const errorMiddleware = require("./src/middlewares/error-middleware");
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -15,7 +17,8 @@ app.use(express.json());
 // app.use(express.static("public")); Uncomment me if you need to use some public files
 
 app.use("/api/users", usersRouter);
-
+app.use(errorMiddleware);
+app.use(cookieParser());
 app.use((_, res) => {
   res.status(404).json({ message: "Not found" });
 });
