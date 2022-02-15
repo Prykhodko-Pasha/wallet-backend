@@ -1,28 +1,27 @@
-
-const Router = require("express").Router;
-const userController = require("../../controllers/userСontroller");
-const router = new Router();
-const { body } = require("express-validator");
-const authMiddleware = require("../../middlewares/auth-middleware");
-
-router.post(
-  "/registration",
-  body("email").isEmail(),
-  body("password").isLength({ min: 6, max: 12 }),
-  userController.registration
-);
-router.post("/login", userController.login);
-router.post("/logout", userController.logout);
-router.get("/activate/:link", userController.activate);
-router.get("/refresh", userController.refresh);
-router.get("/users", authMiddleware, userController.getUsers);
+/* eslint-disable no-unused-vars */
 
 const express = require("express");
-const { auth } = require("../../middlewares");
-const ctrl = require("../../controllers/users");
-const router = express.Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { BadRequest, Conflict, Unauthorized } = require("http-errors");
 
-router.get("/currentUser", auth, ctrl.getCurrent);
+const { User } = require("../../models");
+const { joiSignupSchema, joiLoginSchema } = require("../../models/user");
+ const { authenticate, upload } = require("../../middlewares");
+const { SECRET_KEY } = process.env;
 
+ const router = express.Router();
+
+
+ router.post("/singup", async (res, req, next) => {});
+
+
+ router.post("/login", async (req, res, next) => {});
+
+ router.get("/logout", authenticate, async (req, res) => {
+const { _id } = req.user;
+await User.findByIdAndUpdate(_id, { token: null });
+res.status(204).send();
+});
 
 module.exports = router;
