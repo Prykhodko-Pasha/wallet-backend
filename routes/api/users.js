@@ -12,7 +12,7 @@ const { SECRET_KEY } = process.env;
 const router = express.Router();
 
 // реєстрація користувача з хешуванням пароля
-router.post("/register", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   try {
     const { error } = RegisterSchema.validate(req.body);
     if (error) {
