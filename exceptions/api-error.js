@@ -16,3 +16,4 @@ module.exports = class ApiError extends Error {
     return new ApiError(400, message, errors);
   }
 };
+// Універсальний клас для обробки помилок, пов'язаних з API

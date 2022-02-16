@@ -10,3 +10,4 @@ module.exports = class UserDto {
   }
 };
 
+// data transfer object- поля, які відправляємо на клієнт 

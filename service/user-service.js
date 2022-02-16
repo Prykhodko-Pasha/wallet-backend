@@ -8,20 +8,20 @@ const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 
 class UserService {
- 
+  // Сервіс для роботи з користувачами, створення-видалення.
   async registration(email, password) {
     const candidate = await UserModel.findOne({ email });
-    
+    // перевірити, чи немає з таким мейлом користувача в БД,якщо кидаємо помилку
     if (candidate) {
       throw ApiError.BadRequest(
         `User with email address ${email} already exists`
       );
     }
-    
+    // хешуємо пароль і робимо посилання активації
     const hashPassword = await bcrypt.hash(password, 3);
-    const activationLink = uuid.v4(); // v34fa-atfasf-142saf-sa-asf
+    const activationLink = uuid.v4();
 
-
+// зберігаємо користувача в БД
     const user = await UserModel.create({
       email,
       password: hashPassword,
@@ -30,13 +30,14 @@ class UserService {
 
     
     const userDto = new UserDto(user);
+    // функція генерації токена, зберігаємо рефреш токен в БД
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-    return { ...tokens, user: userDto }; 
+    return { ...tokens, user: userDto }; // Повертаємо інфо про користувача та токени
   }
 
- 
+ // функція активації, очікує на вхід посилання на активацію
   async activate(activationLink) {
     const user = await UserModel.findOne({ activationLink });
     if (!user) {
