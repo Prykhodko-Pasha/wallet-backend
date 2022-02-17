@@ -3,7 +3,7 @@ const { Unauthorized } = require("http-errors");
 
 const { User } = require("../models");
 
-const { SECRET_KEY } = process.env;
+const { JWT_SECRET_KEY } = process.env;
 
 const authenticate = async (req, res, next) => {
   try {
@@ -15,7 +15,7 @@ const authenticate = async (req, res, next) => {
     if (bearer !== "Bearer") {
       throw new Unauthorized("Invalid token");
     }
-    jwt.verify(token, SECRET_KEY);
+    jwt.verify(token, JWT_SECRET_KEY);
     const user = await User.findOne({ token });
     if (!user) {
       throw new Unauthorized("Invalid token");
