@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-
+// Ініціалізуємо поштовий клієнт
 class MailService {
   constructor() {
    
@@ -13,12 +13,13 @@ class MailService {
       },
     });
   }
-  
+  // Надсилання листа для активації
+
   async sendActivationMail(to, link) {
     await this.transporter.sendMail({
       from: process.env.SMTP_USER,
       to,
-     
+     // при депло перезаписати доменне ім'я в config
       subject: "Account activation на " + process.env.DOMAIN,
       text: "",
       html: `

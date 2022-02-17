@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const tokenModel = require("../models/token-model");
 
-
+// генерація токена, час життя токена
 class TokenService {
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
@@ -33,15 +33,18 @@ class TokenService {
       return null;
     }
   }
+   // зберігає рефреш токен в БД для конкретного користувача
   
   async saveToken(userId, refreshToken) {
-    
+     // находим по такому userId токен в БД
     const tokenData = await tokenModel.findOne({ user: userId });
     if (tokenData) {
-      tokenData.refreshToken = refreshToken; 
+      tokenData.refreshToken = refreshToken; // рефреш токен перезаписуєм
       return tokenData.save();
     }
-  
+    
+    // если юзер логинится первый раз,создаем запись
+
     const token = await tokenModel.create({ user: userId, refreshToken });
     return token;
   }

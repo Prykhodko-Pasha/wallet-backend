@@ -8,3 +8,5 @@ const UserSchema = new Schema({
 });
 
 module.exports = model("User", UserSchema);
+
+// схема визначає, які поля містить суть користувача
