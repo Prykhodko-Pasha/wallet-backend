@@ -1,9 +1,6 @@
 const sendEmail = require("../../helpers/sendEmail");
 const { User, joiSchemaUserSignup } = require("../../models/user");
 
-const { PORT = 3001 } = process.env;
-const BASE_URL = `http://localhost:${PORT}/api`;
-
 const signupUser = async (req, res, next) => {
   try {
     const { error } = joiSchemaUserSignup.validate(req.body);
@@ -26,15 +23,7 @@ const signupUser = async (req, res, next) => {
     const result = await newUser.save();
 
     const { verificationToken } = result;
-    const data = {
-      to: email,
-      subject: "Verifying new email - WALLET",
-      html: `<h1>Email Confirmation</h1>
-             <p>Thank you for registration!</p>
-             <p>Please confirm your email by clicking on the following link: </p>
-             <a href="${BASE_URL}/users/verify/${verificationToken}">Click here</a>`,
-    };
-    sendEmail(data);
+    sendEmail(email, verificationToken);
 
     res.status(201).json({
       email,
