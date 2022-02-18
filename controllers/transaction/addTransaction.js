@@ -8,7 +8,7 @@ const addTransaction = async (req, res, next) => {
     if (error) {
       throw new BadRequest("missing required name field");
     }
-    // const { _id } = req.user;
+    const { _id } = req.user;
     const { sum, type } = req.body;
     let total = 0;
     const today = new Date();
@@ -17,7 +17,7 @@ const addTransaction = async (req, res, next) => {
 
     const lastTransaction = await Transaction.findOne(
       {
-        // owner: _id
+        owner: _id,
       },
       {},
       { sort: { createdAt: -1 } }
@@ -39,7 +39,7 @@ const addTransaction = async (req, res, next) => {
       total,
       month,
       year,
-      // owner: _id,
+      owner: _id,
     });
     res.status(201).json(newTransactions);
   } catch (error) {
