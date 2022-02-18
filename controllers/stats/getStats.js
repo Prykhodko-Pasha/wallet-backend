@@ -3,42 +3,32 @@ const { Transaction } = require("../../models/transactions")
 const getStats = async (req, res, next) => {
     const { year, month } = req.query
     try {
-        const result = await Transaction.find()
-        const filteredResultByYear = result.filter(function (el) {
-            if (`${year}` === `${el.year}`) return true;
-            return false;
-        })
-        const filteredResultByMonth = filteredResultByYear.filter(function (el) {
-            if (`${month}` === `${el.month}`) return true;
-            return false;
-        })
-        const categories = filteredResultByMonth.map(item => {
+        const transactions = await Transaction.find({ year, month })
+        const categories = transactions.map(item => {
             return item.category
         })
-        const uniqueCategories = [...new Set(categories)];
+        const uniqueCategories = [...new Set(categories)]
+
         const categoriesSumm = {}
-        uniqueCategories.forEach(function (category) {
-            filteredResultByMonth.forEach(function (transaction) {
+        uniqueCategories.forEach(category => {
+            transactions.forEach(transaction => {
                 if (transaction.category === category) {
                     if (!categoriesSumm[category]) {
                         categoriesSumm[category] = 0;
                     }
                     categoriesSumm[category] += transaction.sum
                 }
+
             })
         })
-        // return res.json({
-        //     status: "success",
-        //     code: 200,
-        //     data: {
-        //         year,
-        //         month,
-        //         transactions: filteredResultByMonth,
-        //         uniqueCategories,
-        //         categoriesSumm,
-        //     }
-        // })
-        return res.status(200).json([categoriesSumm])
+        const finalArr = Object.keys(categoriesSumm).map(key => {
+            return {
+                category: key,
+                total: categoriesSumm[key],
+            }
+        })
+
+        return res.status(200).json(finalArr)
 
     } catch (error) {
         next(error);
@@ -46,6 +36,17 @@ const getStats = async (req, res, next) => {
 
 };
 
-module.exports = getStats;
 
+
+
+
+
+
+
+
+
+
+
+
+module.exports = getStats;
 
