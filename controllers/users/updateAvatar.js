@@ -5,7 +5,7 @@ const { User } = require("../../models/user");
 const avatarsDir = path.join(__dirname, "../", "public/avatars");
 
 
-const updateUserAvatar = async (req, res, next) => {
+const updateAvatar = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const { path: tempUpload, filename } = req.file;
@@ -26,4 +26,4 @@ const updateUserAvatar = async (req, res, next) => {
   }
 };
 
-module.exports = updateUserAvatar;
+module.exports =  updateAvatar;
