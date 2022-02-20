@@ -8,7 +8,6 @@ const getStats = async (req, res, next) => {
             return item.category
         })
         const uniqueCategories = [...new Set(categories)]
-
         const categoriesSumm = {}
         uniqueCategories.forEach(category => {
             transactions.forEach(transaction => {
@@ -18,35 +17,20 @@ const getStats = async (req, res, next) => {
                     }
                     categoriesSumm[category] += transaction.sum
                 }
-
             })
         })
-        const finalArr = Object.keys(categoriesSumm).map(key => {
+        const result = Object.keys(categoriesSumm).map(key => {
             return {
                 category: key,
                 total: categoriesSumm[key],
             }
         })
-
-        return res.status(200).json(finalArr)
+        return res.status(200).json(result)
 
     } catch (error) {
         next(error);
     }
-
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = getStats;
 
