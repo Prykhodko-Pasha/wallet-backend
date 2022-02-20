@@ -4,7 +4,7 @@ const loginUser = require("./login");
 const logoutUser = require("./logout");
 const verifyUserEmail = require("./verifyEmail");
 const sendVerifLetter = require("./sendVerifLetter");
-const updateUserAvatar = require("./userControllers")
+const updateUserAvatar = require("./updateAvatar")
 
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, models } = require("mongoose");
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
@@ -73,7 +73,7 @@ const joiSchemaUserVerif = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
 });
 
-const User = model("user", userSchema);
+const User = models("user", userSchema);
 
 module.exports = {
   User,

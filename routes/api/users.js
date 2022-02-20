@@ -3,7 +3,7 @@ const auth = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 const router = express.Router();
 const upload = require("../../middlewares/upload");
-const { userControllers } = require("../../controllers/users");
+const updateAvatar = require("../../controllers/users/updateAvatar");
 
 
 
@@ -18,7 +18,7 @@ router.patch(
   "/avatars",
   auth,
   upload.single("avatar"),
-  userControllers.updateUserAvatar
+  updateAvatar.updateUserAvatar
 );
 
 module.exports = router;
