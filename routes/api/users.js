@@ -21,4 +21,4 @@ router.patch(
   updateAvatar.updateUserAvatar
 );
 
-module.exports = router;
+module.exports = { router };
