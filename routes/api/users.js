@@ -3,7 +3,7 @@ const auth = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 const router = express.Router();
 const upload = require("../../middlewares/upload");
-const { userControllers } = require("../../models/user");
+const { userControllers } = require("../../controllers/users");
 
 
 

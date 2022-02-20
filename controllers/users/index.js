@@ -4,6 +4,7 @@ const loginUser = require("./login");
 const logoutUser = require("./logout");
 const verifyUserEmail = require("./verifyEmail");
 const sendVerifLetter = require("./sendVerifLetter");
+const updateUserAvatar = require("./userControllers")
 
 
 module.exports = {
@@ -13,4 +14,5 @@ module.exports = {
   logoutUser,
   verifyUserEmail,
   sendVerifLetter,
+  updateUserAvatar,
 };
