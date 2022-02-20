@@ -22,7 +22,6 @@ app.use("/api/transactions", transactionsRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/transactions/stats", statsRouter);
 
-
 app.use((_, res) => {
   res.status(404).json({ message: "Not found" });
 });
@@ -32,4 +31,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-module.exports =  app ;
+module.exports = app;
