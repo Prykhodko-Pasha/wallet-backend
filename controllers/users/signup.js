@@ -18,7 +18,7 @@ const signupUser = async (req, res, next) => {
 
     const newUser = new User(req.body);
     newUser.setPassword(password);
-    // newUser.generateAvatar(email);
+    newUser.generateAvatar(email);
     newUser.generateVerifToken();
     const result = await newUser.save();
 

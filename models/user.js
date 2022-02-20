@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 const { nanoid } = require("nanoid");
 
 // eslint-disable-next-line no-useless-escape
@@ -20,10 +21,10 @@ const userSchema = Schema({
     type: String,
     required: [true, "Name is required"],
   },
-  //   avatarURL: {
-  //     type: String,
-  //     default: null,
-  //   },
+  avatarURL: {
+    type: String,
+    default: null,
+    },
   token: {
     type: String,
     default: null,
@@ -46,13 +47,14 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-// userSchema.methods.generateAvatar = function (email) {
-//   this.avatarURL = gravatar.url(email, {
-//     protocol: "https",
-//     s: "250",
-//     d: "wavatar",
-//   });
-// };
+ userSchema.methods.generateAvatar = function (email) {
+   this.avatarURL = gravatar.url(email, {
+    protocol: "https",
+    s: "250",
+    d: "wavatar",
+   });
+};
+ 
 
 userSchema.methods.generateVerifToken = function () {
   this.verificationToken = nanoid();
