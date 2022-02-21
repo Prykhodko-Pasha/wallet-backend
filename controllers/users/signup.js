@@ -1,4 +1,3 @@
-// const sendEmail = require("../../helpers/sendEmail");
 const { User, joiSchemaUserSignup } = require("../../models/user");
 
 const signupUser = async (req, res, next) => {
