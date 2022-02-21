@@ -1,4 +1,4 @@
-const sendEmail = require("../../helpers/sendEmail");
+// const sendEmail = require("../../helpers/sendEmail");
 const { User, joiSchemaUserSignup } = require("../../models/user");
 
 const signupUser = async (req, res, next) => {
@@ -19,11 +19,12 @@ const signupUser = async (req, res, next) => {
     const newUser = new User(req.body);
     newUser.setPassword(password);
     newUser.generateAvatar(email);
-    newUser.generateVerifToken();
-    const result = await newUser.save();
+    // newUser.generateVerifToken();
+    // const result = await newUser.save();
+    await newUser.save();
 
-    const { verificationToken } = result;
-    sendEmail(email, verificationToken);
+    // const { verificationToken } = result;
+    // sendEmail(email, verificationToken);
 
     res.status(201).json({
       email,
