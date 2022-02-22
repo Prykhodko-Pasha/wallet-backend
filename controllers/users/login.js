@@ -22,7 +22,7 @@ const loginUser = async (req, res, next) => {
     //     message: "Email is not verified",
     //   });
 
-    const { _id, name } = user;
+    const { _id, name, avatarURL } = user;
     const payload = { id: _id };
     const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "24h" });
     await User.findByIdAndUpdate(_id, { token });
@@ -33,6 +33,7 @@ const loginUser = async (req, res, next) => {
         id: _id,
         email,
         name,
+        avatarURL,
       },
     });
   } catch (err) {
